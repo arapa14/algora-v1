@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend/initializer"
+	"backend/utils/shared"
 	"context"
 	"log"
 	"net/http"
@@ -37,6 +38,12 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(`{"message": "Welcome to Algora V1 API"}`))
+	})
+	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		shared.RespondSuccess(w, http.StatusOK, "Server is healthy", map[string]string{
+			"version": "1.0.0",
+			"env":     initializer.AppConfig.Server.ENV,
+		})
 	})
 
 	// mux.HandleFunc("/register", authHandler.Register)
